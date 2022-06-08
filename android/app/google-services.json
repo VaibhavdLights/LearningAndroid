@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "541024069294",
+    "project_id": "dlights-flutter-myapp",
+    "storage_bucket": "dlights-flutter-myapp.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:541024069294:android:becf255fd776a46faeef3f",
+        "android_client_info": {
+          "package_name": "com.example.myapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "541024069294-nrs29a8vuiukjp8kc8vreuetkmejrp7g.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyCOhr3v4xUZ59FG4lhF4XKVrs-6uDVh9OM"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "541024069294-nrs29a8vuiukjp8kc8vreuetkmejrp7g.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
