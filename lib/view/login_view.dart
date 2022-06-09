@@ -31,70 +31,51 @@ class _LoginViewState extends State<LoginView> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text("Register"),
-      ),
-      body: FutureBuilder(
-        future: Firebase.initializeApp(
-          options: DefaultFirebaseOptions.currentPlatform,
+    return Column(
+      children: [
+        TextField(
+          controller: _email,
+          enableSuggestions: false,
+          autocorrect: false,
+          keyboardType: TextInputType.emailAddress,
+          decoration: const InputDecoration(
+            hintText: "Email",
+          ),
         ),
-        builder: (context, snapshot) {
-          switch (snapshot.connectionState) {
-            case ConnectionState.done:
-              return Column(
-                children: [
-                  TextField(
-                    controller: _email,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    keyboardType: TextInputType.emailAddress,
-                    decoration: const InputDecoration(
-                      hintText: "Email",
-                    ),
-                  ),
-                  TextField(
-                    controller: _password,
-                    obscureText: true,
-                    enableSuggestions: false,
-                    autocorrect: false,
-                    decoration: const InputDecoration(
-                      hintText: "Password",
-                    ),
-                  ),
-                  TextButton(
-                    onPressed: () async {
-                      try {
-                        final email = _email.text;
-                        final password = _password.text;
-                        await FirebaseAuth.instance.signInWithEmailAndPassword(
-                            email: email, password: password);
-                      } on FirebaseAuthException catch (e) {
-                        if (e.code == 'user-not-found') {
-                          // print("USER NOT FOUND");
-                          // ignore: use_build_context_synchronously
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content: Text("USER NOT FOUND"),
-                          ));
-                        } else if (e.code == 'wrong-password') {
-                          // ignore: use_build_context_synchronously
-                          ScaffoldMessenger.of(context)
-                              .showSnackBar(const SnackBar(
-                            content: Text("WRONG PASSWORD"),
-                          ));
-                        }
-                      }
-                    },
-                    child: const Text("Register"),
-                  ),
-                ],
-              );
-            default:
-              return const Text("Loading...");
-          }
-        },
-      ),
+        TextField(
+          controller: _password,
+          obscureText: true,
+          enableSuggestions: false,
+          autocorrect: false,
+          decoration: const InputDecoration(
+            hintText: "Password",
+          ),
+        ),
+        TextButton(
+          onPressed: () async {
+            try {
+              final email = _email.text;
+              final password = _password.text;
+              await FirebaseAuth.instance
+                  .signInWithEmailAndPassword(email: email, password: password);
+            } on FirebaseAuthException catch (e) {
+              if (e.code == 'user-not-found') {
+                // print("USER NOT FOUND");
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("USER NOT FOUND"),
+                ));
+              } else if (e.code == 'wrong-password') {
+                // ignore: use_build_context_synchronously
+                ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+                  content: Text("WRONG PASSWORD"),
+                ));
+              }
+            }
+          },
+          child: const Text("Login"),
+        ),
+      ],
     );
   }
 }
