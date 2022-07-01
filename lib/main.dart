@@ -7,6 +7,7 @@ import 'package:myapp/view/verify_email_view.dart';
 import '../firebase_options.dart';
 import 'firebase_options.dart';
 import 'package:myapp/view/register_view.dart';
+import 'dart:developer' as devtools show log;
 
 void main() {
   runApp(MaterialApp(
@@ -42,7 +43,7 @@ class HomePage extends StatelessWidget {
                 return const VerifyEmailView();
               }
             } else {
-              return const NotesView();
+              return const LoginView();
             }
           default:
             return const CircularProgressIndicator();
@@ -51,6 +52,8 @@ class HomePage extends StatelessWidget {
     );
   }
 }
+
+enum MenuAction { logout }
 
 class NotesView extends StatefulWidget {
   const NotesView({Key? key}) : super(key: key);
@@ -65,7 +68,61 @@ class _NotesViewState extends State<NotesView> {
     return Scaffold(
       appBar: AppBar(
         title: const Text("Main UI"),
+        actions: [
+          PopupMenuButton<MenuAction>(
+            onSelected: (value) async {
+              // devtools.log(value.toString());
+              switch (value) {
+                case MenuAction.logout:
+                  final shouldLogout = await showLogoutDialogBox(context);
+                  if (shouldLogout) {
+                    await FirebaseAuth.instance.signOut();
+                    // ignore: use_build_context_synchronously
+                    Navigator.of(context).pushNamedAndRemoveUntil(
+                      '/login/',
+                      (_) => false,
+                    );
+                  }
+                  break;
+              }
+            },
+            itemBuilder: (context) {
+              return const [
+                PopupMenuItem<MenuAction>(
+                  value: MenuAction.logout,
+                  child: Text("Logout"),
+                ),
+              ];
+            },
+          )
+        ],
       ),
     );
   }
+}
+
+Future<bool> showLogoutDialogBox(BuildContext context) {
+  return showDialog<bool>(
+    context: context,
+    builder: (context) {
+      return AlertDialog(
+        title: const Text("Logout?"),
+        content: const Text("Are you sure you want to Log out?"),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(false);
+            },
+            child: const Text("Cancel"),
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(true);
+            },
+            child: const Text("Logout"),
+          ),
+        ],
+      );
+    },
+  ).then((value) => value ?? false);
 }
