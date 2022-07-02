@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myapp/constants/routes.dart';
 
+import '../utilities/show_error_dialog.dart';
+
 class LoginView extends StatefulWidget {
   const LoginView({Key? key}) : super(key: key);
 
@@ -70,16 +72,15 @@ class _LoginViewState extends State<LoginView> {
                 );
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'user-not-found') {
-                  // print("USER NOT FOUND");
-                  // ignore: use_build_context_synchronously
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("USER NOT FOUND"),
-                  ));
+                  await showErrorDialog(
+                    context,
+                    'USER NOT FOUND',
+                  );
                 } else if (e.code == 'wrong-password') {
-                  // ignore: use_build_context_synchronously
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text("WRONG PASSWORD"),
-                  ));
+                  await showErrorDialog(
+                    context,
+                    'WRONG PASSWORD',
+                  );
                 }
               }
             },

@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:myapp/constants/routes.dart';
 
+import '../utilities/show_error_dialog.dart';
+
 class RegisterView extends StatefulWidget {
   const RegisterView({Key? key}) : super(key: key);
 
@@ -63,20 +65,20 @@ class _RegisterViewState extends State<RegisterView> {
                     email: email, password: password);
               } on FirebaseAuthException catch (e) {
                 if (e.code == 'weak-password') {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('WEAK PASSWORD'),
-                  ));
-                  // print("WEAK PASSWORD");
+                  await showErrorDialog(
+                    context,
+                    'WEAK PASSWORD',
+                  );
                 } else if (e.code == 'email-already-in-use') {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('EMAIL AREADY IN USE'),
-                  ));
-                  // print("EMAIL IS ALREADY IN USE");
+                  await showErrorDialog(
+                    context,
+                    'EMAIL ALREADY IN USE',
+                  );
                 } else if (e.code == 'invalid-email') {
-                  ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-                    content: Text('INVALID EMAIL'),
-                  ));
-                  // print("INVALID EMAIL");
+                  await showErrorDialog(
+                    context,
+                    'INVALID EMAIL',
+                  );
                 }
               }
             },
